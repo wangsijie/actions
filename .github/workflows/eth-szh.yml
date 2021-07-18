@@ -1,0 +1,20 @@
+name: 矿机监控(szh)
+
+on:
+  schedule:
+    - cron: '0 5 * * *'
+
+jobs:
+  daily:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      - run: yarn install
+        working-directory: packages/eth
+      - name: check
+        run: node szh.js
+        working-directory: packages/eth
+        env:
+          FEISHU_BOT: ${{secrets.FEISHU_SHENZHUOHUA}}
