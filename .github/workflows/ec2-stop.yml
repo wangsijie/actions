@@ -1,0 +1,19 @@
+name: Stop EC2
+
+on:
+  schedule:
+    - cron: '0 16 * * *'
+  workflow_dispatch:
+
+jobs:
+  stop:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: AWS cli install action
+        uses: chrislennon/action-aws-cli@1.1
+      - run: aws ec2 stop-instances --instance-ids i-04e405d4180419140
+        env:
+          AWS_ACCESS_KEY_ID: AKIAXVSCAOY35STDOI6I
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SK }}
+          AWS_DEFAULT_REGION: cn-northwest-1
