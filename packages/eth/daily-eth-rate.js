@@ -1,6 +1,6 @@
 const axios = require('axios');
 const moment = require('moment');
-const { getPoolInfo } = require('./f2pool');
+const { getPoolInfo } = require('./binance');
 const ots = require('./ots').client;
 
 async function getEthPrice() {

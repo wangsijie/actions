@@ -3,7 +3,7 @@ const moment = require('moment');
 const config = require('./config');
 const ots = require('./ots').client;
 const TS = require('./ots').TS;
-const { getPoolInfo } = require('./f2pool');
+const { getPoolInfo } = require('./binance');
 
 async function getHistoryEth() {
     const rows = await ots.getRows(
