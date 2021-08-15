@@ -2,7 +2,7 @@ const axios = require("axios");
 const moment = require("moment");
 
 async function app() {
-  const res = await axios.get("https://api.f2pool.com/eth/woaipingpu");
+  const res = await axios.get(`https://api.f2pool.com/eth/${process.env.F2POOL_USERNAME}`);
   const now = moment();
   for (const worker of res.data.workers) {
     const name = worker[0];

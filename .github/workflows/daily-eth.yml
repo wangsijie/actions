@@ -1,11 +1,12 @@
-name: 矿机监控
+name: daily eth
 
 on:
   schedule:
-    - cron: '0,30 * * * *'
+    - cron: '0 5 * * *'
+  workflow_dispatch:
 
 jobs:
-  watcher:
+  report:
     runs-on: ubuntu-latest
 
     steps:
@@ -14,8 +15,11 @@ jobs:
       - run: yarn install
         working-directory: packages/eth
       - name: check
-        run: node wsj.js
+        run: node daily-eth.js
         working-directory: packages/eth
         env:
-          WXBOT: ${{ secrets.WXBOT_HUIDONG }}
+          NODE_ENV: production
+          WXBOT: ${{ secrets.WXBOT_ETHGROUP }}
           F2POOL_USERNAME: ${{ secrets.F2POOL_USERNAME }}
+          OTS_AK: ${{ secrets.OTS_AK }}
+          OTS_SK: ${{ secrets.OTS_SK }}
