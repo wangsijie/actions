@@ -18,4 +18,4 @@ jobs:
         working-directory: packages/eth
         env:
           WXBOT: ${{ secrets.WXBOT_HUIDONG }}
-          F2POOL_USERNAME: ${{ secrets.F2POOL_USERNAME }}
+          BN_TOKEN: ${{ secrets.BN_TOKEN }}
