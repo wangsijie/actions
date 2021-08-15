@@ -5,7 +5,7 @@ on:
     - cron: '0,30 * * * *'
 
 jobs:
-  daily:
+  watcher:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,4 +17,4 @@ jobs:
         run: node szh.js
         working-directory: packages/eth
         env:
-          FEISHU_BOT: ${{secrets.FEISHU_SHENZHUOHUA}}
+          WXBOT: ${{ secrets.WXBOT_HUIDONG }}

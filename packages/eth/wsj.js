@@ -1,25 +1,22 @@
-const axios = require('axios');
-const moment = require('moment');
+const axios = require("axios");
+const moment = require("moment");
 
 async function app() {
-    const res = await axios.get('https://api.f2pool.com/eth/woaipingpu');
-    const now = moment();
-    for (const worker of res.data.workers) {
-        const name = worker[0];
-        const time = worker[6];
-        console.log(name, moment(time).unix(), now.unix());
-        if (moment(time).add(10, 'minutes').isBefore(now)) {
-            await axios.post(
-                `https://open.feishu.cn/open-apis/bot/v2/hook/${process.env.FEISHU_BOT}`,
-                {
-                    "msg_type": "text",
-                    "content": {
-                        "text": `矿机${name}超过10分钟没有活动`
-                    }
-                },
-            );
+  const res = await axios.get("https://api.f2pool.com/eth/woaipingpu");
+  const now = moment();
+  for (const worker of res.data.workers) {
+    const name = worker[0];
+    const time = worker[6];
+    console.log(name, moment(time).unix(), now.unix());
+    if (moment(time).add(10, "minutes").isBefore(now)) {
+      await axios.get(
+        `https://push.bot.qw360.cn/send/${process.env.WXBOT}`,
+        {
+          params: { msg: `矿机${name}超过10分钟没有活动` },
         }
+      );
     }
+  }
 }
 
 app();
