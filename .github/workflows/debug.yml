@@ -1,4 +1,4 @@
-name: CI
+name: debug machine
 on:
   workflow_dispatch:
 jobs:
