@@ -1,19 +1,17 @@
 const axios = require("axios");
-const moment = require("moment");
 
 async function app() {
-  const res = await axios.get("https://api.f2pool.com/eth/sflydragon");
-  const now = moment();
-  for (const worker of res.data.workers) {
-    const name = worker[0];
-    const time = worker[6];
-    console.log(name, moment(time).unix(), now.unix());
-    if (moment(time).add(10, "minutes").isBefore(now)) {
-      await axios.get(`https://push.bot.qw360.cn/send/${process.env.WXBOT}`, {
-        params: { msg: `矿机${name}超过10分钟没有活动` },
-      });
-    }
+  const res = await axios.get(`https://pool.binance.com/mining-api/v1/public/pool/stat?observerToken=${process.env.BN_TOKEN}`);
+  const { invalidNum } = res.data.data;
+  if (invalidNum) {
+    await axios.get(
+      `https://push.bot.qw360.cn/send/${process.env.WXBOT}`,
+      {
+        params: { msg: `有矿机超过10分钟没有活动` },
+      }
+    );
   }
+  console.log(invalidNum);
 }
 
 app();

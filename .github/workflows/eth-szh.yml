@@ -1,8 +1,9 @@
 name: 矿机监控(szh)
 
 on:
-  schedule:
-    - cron: '0,30 * * * *'
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '0,30 * * * *'
 
 jobs:
   watcher:
@@ -17,4 +18,5 @@ jobs:
         run: node szh.js
         working-directory: packages/eth
         env:
-          WXBOT: ${{ secrets.WXBOT_HUIDONG }}
+          WXBOT: ${{ secrets.WXBOT_SHENZHUOHUA }}
+          BN_TOKEN: ${{ secrets.BN_TOKEN_SHENZHUOHUA }}
