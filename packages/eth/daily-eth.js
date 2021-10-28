@@ -49,15 +49,10 @@ async function app() {
     const wsjMessage = `wsj: 昨日算力${totalRate - yyyRate}M，共挖eth: ${Math.floor(wsj.eth / 10 ** 4) / 10 ** 4}(¥${wsj.rmb})，历史已挖：${wsjHistory}(¥${wsjHistoryRmb})，回本进度：${Math.floor(wsjHistoryRmb / config.cost_wsj * 1000) / 10}%`;
     const yyyMessage = `yyy: 昨日算力${yyyRate}M，共挖eth: ${Math.floor(yyy.eth / 10 ** 4) / 10 ** 4}(¥${yyy.rmb})，历史已挖：${yyyHistory}(¥${yyyHistoryRmb})，回本进度：${Math.floor(yyyHistoryRmb / config.cost_yyy * 1000) / 10}%`;
     if (process.env.NODE_ENV === 'production') {
-        const res = await axios.get(
-            `https://push.bot.qw360.cn/room/${process.env.WXBOT}`,
-            {
-                params: {
-                    msg: `${wsjMessage}\n${yyyMessage}`,
-                },
-            },
-        );
-        console.log(res.data);
+        await axios.post(`https://api.telegram.org/bot${process.env.TG_TOKEN}/sendMessage`, {
+            chat_id: process.env.TG_CHAT_ID_ETH_MINE_REPORT,
+            text: `${wsjMessage}\n${yyyMessage}`,
+        });
     } else {
         console.log(wsjMessage);
         console.log(yyyMessage);
