@@ -17,5 +17,6 @@ jobs:
         run: node wsj.js
         working-directory: packages/eth
         env:
-          WXBOT: ${{ secrets.WXBOT_HUIDONG }}
+          TG_CHAT_ID_ALERT: ${{ secrets.TG_CHAT_ID_ALERT }}
+          TG_TOKEN: ${{ secrets.TG_TOKEN }}
           BN_TOKEN: ${{ secrets.BN_TOKEN }}

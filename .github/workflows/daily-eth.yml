@@ -19,7 +19,8 @@ jobs:
         working-directory: packages/eth
         env:
           NODE_ENV: production
-          WXBOT: ${{ secrets.WXBOT_ETHGROUP }}
+          TG_CHAT_ID_ETH_MINE_REPORT: ${{ secrets.TG_CHAT_ID_ETH_MINE_REPORT }}
+          TG_TOKEN: ${{ secrets.TG_TOKEN }}
           BN_TOKEN: ${{ secrets.BN_TOKEN }}
           OTS_AK: ${{ secrets.OTS_AK }}
           OTS_SK: ${{ secrets.OTS_SK }}
