@@ -1,0 +1,13 @@
+name: debug machine with proxy
+on:
+  workflow_dispatch:
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: wangsijie/setup-v2ray@v1
+      with:
+        config-base64: ${{ secrets.V2RAY_CONFIG }}
+    - name: Setup upterm session
+      uses: lhotari/action-upterm@v1
