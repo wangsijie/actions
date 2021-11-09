@@ -1,5 +1,6 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import axios from "axios";
+import { insert } from "../japanese-word";
 
 interface TG_UPDATE {
   update_id: number;
@@ -24,18 +25,22 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     return;
   }
 
-  const [title, content] = message.text.split("\n");
+  const [title, content, meaning, kanji] = message.text.split("\n");
 
-  await axios.post(
-    "https://api.github.com/repos/wangsijie/note/issues",
-    { title, body: content },
-    {
-      headers: {
-        accept: "application/vnd.github.v3+json",
-        authorization: `bearer ${process.env.GITHUB_TOKEN}`,
-      },
-    }
-  );
+  if (title === 'jp') {
+    await insert(content, meaning, kanji);
+  } else {
+    await axios.post(
+      "https://api.github.com/repos/wangsijie/note/issues",
+      { title, body: content },
+      {
+        headers: {
+          accept: "application/vnd.github.v3+json",
+          authorization: `bearer ${process.env.GITHUB_TOKEN}`,
+        },
+      }
+    );
+  }
 
   response.status(200).end();
 };
