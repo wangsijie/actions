@@ -13,6 +13,24 @@ interface TG_UPDATE {
   };
 }
 
+const getTypeAndLines = (body: string): ['todo' | 'jp', string[]] => {
+  const lines = body.split('\n');
+  const [remark, ...rest] = lines;
+  if (remark === 'todo') {
+    return ['todo', rest];
+  }
+
+  if (remark === 'jp') {
+    return ['jp', rest];
+  }
+
+  if (/[\u3040-\u309f\u30a0-\u30ff]/.test(body)) {
+    return ['jp', lines];
+  }
+
+  return ['todo', lines];
+}
+
 export default async (request: VercelRequest, response: VercelResponse) => {
   const { message } = request.body as TG_UPDATE;
   if (message.chat.username !== "wangsijie") {
@@ -25,12 +43,14 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     return;
   }
 
-  const [title, content, meaning, kanji] = message.text.split("\n");
-
+  const [type, lines] = getTypeAndLines(message.text);
+  
   try {
-    if (title === "jp") {
-      await insert(content, meaning, kanji);
+    if (type === "jp") {
+      const [kana, meaning, kanji] = lines;
+      await insert(kana, meaning, kanji);
     } else {
+      const [title, content] = lines;
       await axios.post(
         "https://api.github.com/repos/wangsijie/note/issues",
         { title, body: content },
