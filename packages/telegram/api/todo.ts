@@ -47,8 +47,13 @@ export default async (request: VercelRequest, response: VercelResponse) => {
   
   try {
     if (type === "jp") {
-      const [kana, meaning, kanji] = lines;
-      await insert(kana, meaning, kanji);
+      if (lines.length > 2) {
+        const [kanji, kana, meaning] = lines;
+        await insert(kana, meaning, kanji);
+      } else {
+        const [kana, meaning] = lines;
+        await insert(kana, meaning);
+      }
     } else {
       const [title, content] = lines;
       await axios.post(
