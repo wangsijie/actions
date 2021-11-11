@@ -14,7 +14,7 @@ jobs:
       - run: yarn install
         working-directory: packages/eth
       - name: check
-        run: node wsj.js
+        run: npx ts-node wsj.ts
         working-directory: packages/eth
         env:
           TG_CHAT_ID_ALERT: ${{ secrets.TG_CHAT_ID_ALERT }}

@@ -1,5 +1,5 @@
-const axios = require("axios");
-const { getPoolInfo } = require("./binance");
+import axios from 'axios';
+import { getPoolInfo } from './binance';
 
 async function app() {
   const { invalidNum } = await getPoolInfo();

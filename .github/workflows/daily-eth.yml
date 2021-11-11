@@ -15,12 +15,12 @@ jobs:
       - run: yarn install
         working-directory: packages/eth
       - name: check
-        run: node daily-eth.js
+        run: npx ts-node daily-eth.ts
         working-directory: packages/eth
         env:
           NODE_ENV: production
           TG_CHAT_ID_ETH_MINE_REPORT: ${{ secrets.TG_CHAT_ID_ETH_MINE_REPORT }}
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
           BN_TOKEN: ${{ secrets.BN_TOKEN }}
-          OTS_AK: ${{ secrets.OTS_AK }}
-          OTS_SK: ${{ secrets.OTS_SK }}
+          GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
+          GIST_KEY: ${{ secrets.ETH_GIST_KEY }}

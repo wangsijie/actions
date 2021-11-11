@@ -15,11 +15,10 @@ jobs:
       - run: yarn install
         working-directory: packages/eth
       - name: check
-        run: node daily-eth-rate.js
+        run: npx ts-node daily-eth-rate.ts
         working-directory: packages/eth
         env:
           NODE_ENV: production
-          WXBOT: ${{ secrets.WXBOT_ETHGROUP }}
           BN_TOKEN: ${{ secrets.BN_TOKEN }}
-          OTS_AK: ${{ secrets.OTS_AK }}
-          OTS_SK: ${{ secrets.OTS_SK }}
+          GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
+          GIST_KEY: ${{ secrets.ETH_GIST_KEY }}
