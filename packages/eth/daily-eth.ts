@@ -2,7 +2,7 @@ import axios from "axios";
 import moment from "moment";
 import { getPoolInfo } from "./binance";
 import { cost_wsj, cost_yyy } from "./config";
-import { getMinerLogs, updateGist, updateMinerLogs } from "./gist";
+import { getLastPaid, getMinerLogs, updateGist, updateMinerLogs } from "./gist";
 
 async function getHistoryEth() {
   const rows = await getMinerLogs();
@@ -19,6 +19,7 @@ async function app() {
   const { paid } = await getPoolInfo();
   const date = moment().format("YYYYMMDD");
   const logs = await getMinerLogs();
+  const lastPaidAt = await getLastPaid();
   const wsjRow = logs.find((log) => log.date === date && log.name === "wsj");
   const yyyRow = logs.find((log) => log.date === date && log.name === "yyy");
   if (!wsjRow || !yyyRow) {
@@ -63,18 +64,29 @@ async function app() {
   const { wsj: wsjHistory, yyy: yyyHistory } = await getHistoryEth();
   const wsjHistoryRmb = Math.floor(wsjHistory * ethPrice);
   const yyyHistoryRmb = Math.floor(yyyHistory * ethPrice);
-  const wsjAchiveDate = moment().add(Math.floor((cost_wsj - wsjHistoryRmb) / wsj.rmb), 'day');
-  const yyyAchiveDate = moment().add(Math.floor((cost_yyy - yyyHistoryRmb) / yyy.rmb), 'day');
+  const wsjAchiveDate = moment().add(
+    Math.floor((cost_wsj - wsjHistoryRmb) / wsj.rmb),
+    "day"
+  );
+  const yyyAchiveDate = moment().add(
+    Math.floor((cost_yyy - yyyHistoryRmb) / yyy.rmb),
+    "day"
+  );
   const wsjMessage = `wsj: 昨日算力${totalRate - yyyRate}M，共挖eth: ${
     Math.floor(wsj.eth / 10 ** 4) / 10 ** 4
   }(¥${wsj.rmb})，历史已挖：${wsjHistory}(¥${wsjHistoryRmb})，回本进度：${
     Math.floor((wsjHistoryRmb / cost_wsj) * 1000) / 10
-  }%，静态计算回本日期：${wsjAchiveDate.format('MM-DD')}`;
+  }%，静态计算回本日期：${wsjAchiveDate.format("MM-DD")}`;
+  const unpaid = logs
+    .filter((log) => log.name === "yyy")
+    .filter((log) =>
+      moment(log.date).startOf("day").isAfter(lastPaidAt.startOf("day"))
+    ).reduce((p, log) => p + log.eth, 0);
   const yyyMessage = `yyy: 昨日算力${yyyRate}M，共挖eth: ${
     Math.floor(yyy.eth / 10 ** 4) / 10 ** 4
   }(¥${yyy.rmb})，历史已挖：${yyyHistory}(¥${yyyHistoryRmb})，回本进度：${
     Math.floor((yyyHistoryRmb / cost_yyy) * 1000) / 10
-  }%，静态计算回本日期：${yyyAchiveDate.format('MM-DD')}`;
+  }%，静态计算回本日期：${yyyAchiveDate.format("MM-DD")}，尚未支付：${(unpaid / 10 ** 8).toFixed(4)}`;
   const message = `${wsjMessage}\n\n${yyyMessage}`;
   if (process.env.NODE_ENV === "production") {
     await updateGist({ "summary.md": { content: message } });

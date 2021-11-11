@@ -1,8 +1,10 @@
 import axios from "axios";
+import moment, { Moment } from "moment";
 
 export interface GistFile {
   "eth-miner-log.json": { content: string };
   "summary.md": { content: string };
+  "yyy-paid-logs.json": { content: string};
 }
 
 export const getGist = async (): Promise<GistFile> => {
@@ -56,3 +58,16 @@ export const getMinerLogs = async (): Promise<MinerLog[]> => {
 export const updateMinerLogs = async (logs: MinerLog[]) => {
   await updateGist({ "eth-miner-log.json": { content: JSON.stringify(logs) } });
 };
+
+interface PaidLog {
+  time: string;
+}
+
+export const getLastPaid = async (): Promise<Moment> => {
+  const files = await getGist();
+  const logs = JSON.parse(files['yyy-paid-logs.json'].content) as PaidLog[];
+  if (!logs || !logs[0]) {
+    throw new Error('paid logs not found');
+  }
+  return moment(logs[0].time);
+}
