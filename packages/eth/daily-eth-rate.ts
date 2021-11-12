@@ -28,6 +28,9 @@ async function app() {
   };
   if (process.env.NODE_ENV === "production") {
     const logs = await getMinerLogs();
+    if (logs.find(log => log.date === date)) {
+      throw new Error('今日已经生成过了');
+    }
     logs.push({ ...wsj, name: "wsj", date, eth: 0, rmb: 0 });
     logs.push({ ...yyy, name: "yyy", date, eth: 0, rmb: 0 });
     await updateMinerLogs(logs);
