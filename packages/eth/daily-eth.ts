@@ -32,13 +32,13 @@ async function app() {
   const wsjShare = wsjRate / totalRate;
   const ethPrice = wsjRow.ethPrice;
   const wsj = {
-    eth: paid * wsjShare * 10 ** 8,
+    eth: Math.floor(paid * wsjShare * 10 ** 8),
     rmb: Math.floor(paid * wsjShare * ethPrice),
     ethPrice,
     rate: wsjRate,
   };
   const yyy = {
-    eth: paid * yyyShare * 10 ** 8,
+    eth: Math.floor(paid * yyyShare * 10 ** 8),
     rmb: Math.floor(paid * yyyShare * ethPrice),
     ethPrice,
     rate: yyyRate,
