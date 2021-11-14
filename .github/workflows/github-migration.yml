@@ -1,0 +1,20 @@
+name: github migration
+
+on:
+  schedule:
+    - cron: '0 16 1 * *'
+
+jobs:
+  watcher:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      - run: yarn install
+        working-directory: packages/github-migration
+      - name: check
+        run: npx ts-node index.ts
+        working-directory: packages/github-migration
+        env:
+          GH_TOKEN: ${{ secrets.MIGRATION_GH_TOKEN }}
