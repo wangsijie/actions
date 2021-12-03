@@ -55,10 +55,10 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         await insert(kana, meaning);
       }
     } else {
-      const [title, content] = lines;
+      const [title, ...content] = lines;
       await axios.post(
         "https://api.github.com/repos/wangsijie/note/issues",
-        { title, body: content },
+        { title, body: content.join('\n') },
         {
           headers: {
             accept: "application/vnd.github.v3+json",
