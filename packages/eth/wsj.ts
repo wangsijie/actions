@@ -1,15 +1,15 @@
 import axios from 'axios';
-import { getPoolInfo } from './binance';
+import { getPoolInfo } from './f2pool';
 
 async function app() {
-  const { invalidNum } = await getPoolInfo();
-  if (invalidNum) {
+  const { invalidWorkers } = await getPoolInfo();
+  if (invalidWorkers.length) {
     await axios.post(`https://api.telegram.org/bot${process.env.TG_TOKEN}/sendMessage`, {
       chat_id: process.env.TG_CHAT_ID_ALERT,
-      text: '有矿机超过10分钟没有活动',
+      text: `矿机没有活动: ${invalidWorkers.join(',')}`,
     });
   }
-  console.log(invalidNum);
+  console.log(invalidWorkers);
 }
 
 app();

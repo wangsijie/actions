@@ -19,6 +19,6 @@ jobs:
         working-directory: packages/eth
         env:
           NODE_ENV: production
-          BN_TOKEN: ${{ secrets.BN_TOKEN }}
+          F2_POOL: ${{ secrets.F2_POOL }}
           GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
           GIST_KEY: ${{ secrets.ETH_GIST_KEY }}

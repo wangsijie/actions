@@ -1,6 +1,6 @@
 import axios from "axios";
 import moment from "moment";
-import { getPoolInfo } from "./binance";
+import { getPoolInfo } from "./f2pool";
 import { getMinerLogs, updateMinerLogs } from "./gist";
 
 async function getEthPrice() {

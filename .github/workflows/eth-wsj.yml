@@ -19,4 +19,4 @@ jobs:
         env:
           TG_CHAT_ID_ALERT: ${{ secrets.TG_CHAT_ID_ALERT }}
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
-          BN_TOKEN: ${{ secrets.BN_TOKEN }}
+          F2_POOL: ${{ secrets.F2_POOL }}
