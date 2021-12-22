@@ -21,6 +21,6 @@ jobs:
           NODE_ENV: production
           TG_CHAT_ID_ETH_MINE_REPORT: ${{ secrets.TG_CHAT_ID_ETH_MINE_REPORT }}
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
-          F2_POOL: ${{ secrets.F2_POOL }}
+          F2POOL: ${{ secrets.F2POOL }}
           GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
           GIST_KEY: ${{ secrets.ETH_GIST_KEY }}
